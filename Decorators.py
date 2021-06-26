@@ -42,19 +42,17 @@ class Machine:
         self.T = T
         # The maximum number of termination cycles of the simulator.
         self.HALT = HALT
-        # This data structure is used to record the execution and termination.
-        # of tasks
+        # This data structure is used to record the execution and termination of tasks.
         self.log_list = {}
         # This data structure is used to provide a task queue.
         self.queue = []
         # This data structure is used to record the input signal string of
-        # tasks in the task queue
+        # tasks in the task queue.
         self.queue_temp = []
         # This data structure is used to record the initial state of tasks in
         # the task queue.
         self.queue_init = []
-        # This data structure is used to record the PID of the task that the
-        # task queue is waiting for.
+        # This data structure is used to record the PID of the task that the task queue is waiting for.
         self.current = -1
 
     def call_after_delay(self, delay):
@@ -112,8 +110,8 @@ class Machine:
 
     def IO_en(self, IO):
         """
-        This decorator is used to enable the IO of the simulator (standard input, blocking).
-        :param IO: Enable IO status , True or False
+        This decorator is used to enable the I/O of the simulator (standard input, blocking).
+        :param IO: Enable I/O status , True or False
         :return: a decorator
         """
         def decorator(fun):

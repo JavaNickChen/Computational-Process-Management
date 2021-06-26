@@ -21,18 +21,16 @@ Implement a library for programming in the style ( implement  all processes as f
    
 	
 # Synopsis
+Project simulate the concurrency of process running.
+Implement all processes as finite state machines in an infinite loop (see decorator.execute () function). Have each state machine work with the environment in a non-blocking manner by waiting for some external event and change state after they are implemented. And Each cycle represents a unit of time.     
 
+The function (in other words, the emulated process) that is decorated by the decorator is placed in the wait queue (in the code, it is stored in the variable "WORK_QUEUE").    
+
+In execute() function, the wait queue is traversed, and execute the "processes" in the wait and the corresponding operations.Finally, The execution record is recorded in the variable "WORK_POOL".
 
 Our code has been committed into the github https://github.com/JavaNickChen/Computational-Process-Management    
 
 # Contribution Summary for Each Group Member
-    
+Wang and Chen discussed the implement design togother. Then, Wang implemented the Decorator.py and the test code. And Chen modified the unsuitable name of variables and files, added necessary comment and summarized the project.
 
-# Explanation of Taken Design Decisions and Analysis   
-
-
-
-# Work Demonstration
-
-
-# Conclusion   
+   

@@ -137,7 +137,7 @@ class DecoratorTest(unittest.TestCase):
     def test_queue(self):
         cnc = Machine(1, 10)
 
-        @cnc.call_by_queue(['0', '0', '0', '0','1'])
+        @cnc.call_by_queue(['0', '0', '0', '0', '1'])
         def num(inp, out):
             if not inp:
                 return "0", False
