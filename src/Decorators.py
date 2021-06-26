@@ -55,6 +55,11 @@ class Machine:
         self.queue_init = []  # type: List
         # This data structure is used to record the PID of the task that the task queue is waiting for.
         self.current = -1  # type:int
+        # This data structure is used to save the one-way interactive path
+        # between tasks, the key is the master task, and the value is the slave
+        # task list. The return value of the master task will be used as the
+        # next signal to be passed to the slave task.
+        self.channel = collections.OrderedDict()  # type:OrderedDict
 
     def call_after_delay(self, delay: int) -> Any:
         """
@@ -107,6 +112,34 @@ class Machine:
                 self.count_t += 1
                 fun(a, b)
             return wrapfun
+        return decorator
+
+    def link_a_channel(self, PID: int):
+        """
+        This function is used to bind the input signal of a task to the output state of a running task (return value)
+        :param PID: PID of the main task
+        :return: a decorator
+        """
+
+        def decorator(fun: Callable[[str, str], Any]) -> Any:
+            @wraps(fun)
+            def wrapfun(a: str, b: str) -> None:
+                if self.timer not in self.log_list.keys():
+                    self.log_list[self.timer] = []
+                self.work_pool[self.count_t] = fun
+                self.input_seq[self.count_t] = []
+                self.result_pool[self.count_t] = b
+                self.log_list[self.timer].append(
+                    ["Process execute", self.count_t])
+                if PID in self.channel.keys():
+                    self.channel[PID].append(self.count_t)
+                else:
+                    self.channel[PID] = [self.count_t]
+                self.count_t += 1
+                fun(a, b)
+
+            return wrapfun
+
         return decorator
 
     def IO_en(self, IO: bool) -> Any:
@@ -202,6 +235,10 @@ class Machine:
                             del self.queue[0]
                             del self.queue_temp[0]
                             del self.queue_init[0]
+            for i in self.channel:
+                for j in self.channel[i]:
+                    if i in self.work_pool.keys() and j in self.work_pool.keys():
+                        self.input_seq[j].append(self.result_pool[i])
             for i in dellist:
                 del self.work_pool[i]
                 del self.input_seq[i]

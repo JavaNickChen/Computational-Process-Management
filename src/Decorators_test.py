@@ -171,6 +171,61 @@ class DecoratorTest(unittest.TestCase):
         self.assertEqual(cnc.log_list[9][0][0], "Process termination")
         self.assertEqual(cnc.log_list[9][0][1], 1)
 
+    def test_conduction(self):
+        """
+        This test is used to test the state transmission between tasks.
+        The state (return value) of the main task will be transferred to the signal input of the slave task. In this test,
+        the task PID=0 is the main task, and the slave task PID=1 uses the conduction decorator to establish a channel from the main task to the slave task.
+        The main task reaches the termination state in the 5th cycle and transmits the signal "2" to the slave.
+        The slave task, after receiving the signal "2" from the main task, then reaches the end state in the 6th cycle.
+        """
+        cnc = Machine(1, 10)
+
+        @cnc.seq_sup(["0", "0", "0", "1", "2"])
+        def t(inp, out):
+            if not inp:
+                return "0", False
+            elif inp == "0":
+                if out == '0':
+                    return "0", False
+                elif out == "1":
+                    return "1", False
+                elif out == '2':
+                    return "0", False
+            elif inp == '1':
+                if out == '0':
+                    return "0", False
+                elif out == "1":
+                    return "1", False
+                elif out == '2':
+                    return "2", True
+            return inp, False
+
+        @cnc.link_a_channel(0)
+        def t_follow(inp, out):
+            if not inp:
+                return "0", False
+            elif inp == "0":
+                if out == '0':
+                    return "0", False
+                elif out == "1":
+                    return "0", False
+                elif out == '2':
+                    return "1", True
+            return inp, False
+
+        t(None, "0")
+        t_follow(None, '0')
+        cnc.execute()
+        self.assertEqual(cnc.log_list[1][0][0], "Process execute")
+        self.assertEqual(cnc.log_list[1][0][1], 0)
+        self.assertEqual(cnc.log_list[1][1][0], "Process execute")
+        self.assertEqual(cnc.log_list[1][1][1], 1)
+        self.assertEqual(cnc.log_list[5][0][0], "Process termination")
+        self.assertEqual(cnc.log_list[5][0][1], 0)
+        self.assertEqual(cnc.log_list[6][0][0], "Process termination")
+        self.assertEqual(cnc.log_list[6][0][1], 1)
+
 
 if __name__ == '__main__':
     unittest.main()
