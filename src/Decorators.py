@@ -1,7 +1,7 @@
 import collections
 import time
 from functools import wraps
-from typing import List, Dict, Any, Tuple, Union
+from typing import List, OrderedDict, Any, Tuple, Union, Dict
 
 
 class Machine:
@@ -16,13 +16,13 @@ class Machine:
         :param HALT: The maximum number of termination cycles of the simulator.
         """
         # This data structure is used to save tasks (functions) waiting to be deployed.
-        self.work_queue = collections.OrderedDict()  # type:Dict
+        self.work_queue = collections.OrderedDict()  # type:OrderedDict
         # This data structure is used to record the time for waiting tasks that
         # need to be waited for.
-        self.delay_pool = collections.OrderedDict()  # type:Dict
+        self.delay_pool = collections.OrderedDict()  # type:OrderedDict
         # This data structure is used to record the initial state of the
         # waiting task.
-        self.delay_init = collections.OrderedDict()  # type:Dict
+        self.delay_init = collections.OrderedDict()  # type:OrderedDict
         # This data structure is used to record the waiting task number.
         self.count = 0  # type:int
         # This data structure is used to control whether the simulator needs to
@@ -30,13 +30,13 @@ class Machine:
         self.IO_enable = False  # type:bool
         # This data structure is used to record the signal string to be
         # processed by each task.
-        self.input_seq = collections.OrderedDict()  # type:Dict
+        self.input_seq = collections.OrderedDict()  # type:OrderedDict
         # This data structure is used to record the PID of the current task.
         self.count_t = 0  # type: int
         # This data structure is used to record the execution task pool of the simulator.
-        self.work_pool = collections.OrderedDict()  # type:Dict
+        self.work_pool = collections.OrderedDict()  # type:OrderedDict
         # This data structure is used to record the status of each task at the end of the cycle.
-        self.result_pool = collections.OrderedDict()  # type:Dict
+        self.result_pool = collections.OrderedDict()  # type:OrderedDict
         # This data structure is used to record the global cycle number.
         self.timer = 1  # type:int
         # The waiting time of each cycle of the simulator.
