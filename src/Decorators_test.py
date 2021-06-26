@@ -15,7 +15,7 @@ class DecoratorTest(unittest.TestCase):
             if not inp:
                 return "0", False
             elif inp == "0":
-                if out == 0:
+                if out == '0':
                     return "0", False
                 elif out == "1":
                     return "1", True
@@ -36,7 +36,7 @@ class DecoratorTest(unittest.TestCase):
             if not inp:
                 return "0", False
             elif inp == "0":
-                if out == 0:
+                if out == '0':
                     return "0", False
                 elif out == "1":
                     return "1", True
@@ -58,7 +58,7 @@ class DecoratorTest(unittest.TestCase):
             if not inp:
                 return "0", False
             elif inp == "0":
-                if out == 0:
+                if out == '0':
                     return "0", False
                 elif out == "1":
                     return "1", True
@@ -91,7 +91,7 @@ class DecoratorTest(unittest.TestCase):
             if not inp:
                 return "0", False
             elif inp == "0":
-                if out == 0:
+                if out == '0':
                     return "0", False
                 elif out == "1":
                     return "1", True
@@ -142,7 +142,7 @@ class DecoratorTest(unittest.TestCase):
             if not inp:
                 return "0", False
             elif inp == "0":
-                if out == 0:
+                if out == '0':
                     return "0", False
                 elif out == "1":
                     return "1", True
