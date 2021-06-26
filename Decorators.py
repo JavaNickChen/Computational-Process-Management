@@ -3,66 +3,63 @@ import time
 from functools import wraps
 
 
-class machine:
+class Machine:
     """
-    This is a parallel multitasking processor simulator
+    This is a parallel multitasking processor simulator.
     """
 
     def __init__(self, T, HALT):
         """
-        Initialize a parallel simulator
-        :param T: The waiting time of each cycle of the simulator
-        :param HALT: The maximum number of termination cycles of the simulator
+        Initialize a parallel simulator.
+        :param T: The waiting time of each cycle of the simulator.
+        :param HALT: The maximum number of termination cycles of the simulator.
         """
-        # This data structure is used to save tasks (functions) waiting to be
-        # deployed
+        # This data structure is used to save tasks (functions) waiting to be deployed.
         self.work_queue = collections.OrderedDict()
         # This data structure is used to record the time for waiting tasks that
-        # need to be waited for
+        # need to be waited for.
         self.delay_pool = collections.OrderedDict()
         # This data structure is used to record the initial state of the
-        # waiting task
+        # waiting task.
         self.delay_init = collections.OrderedDict()
-        # This data structure is used to record the waiting task number
+        # This data structure is used to record the waiting task number.
         self.count = 0
         # This data structure is used to control whether the simulator needs to
-        # block waiting for IO input (standard input) in each cycle
+        # block waiting for IO input (standard input) in each cycle.
         self.IO_enable = False
         # This data structure is used to record the signal string to be
-        # processed by each task
+        # processed by each task.
         self.input_seq = collections.OrderedDict()
-        # This data structure is used to record the PID of the current task
+        # This data structure is used to record the PID of the current task.
         self.count_t = 0
-        # This data structure is used to record the execution task pool of the
-        # simulator
+        # This data structure is used to record the execution task pool of the simulator.
         self.work_pool = collections.OrderedDict()
-        # This data structure is used to record the status of each task at the
-        # end of the cycle
+        # This data structure is used to record the status of each task at the end of the cycle.
         self.result_pool = collections.OrderedDict()
-        # This data structure is used to record the global cycle number
+        # This data structure is used to record the global cycle number.
         self.timer = 1
-        # The waiting time of each cycle of the simulator
+        # The waiting time of each cycle of the simulator.
         self.T = T
-        # The maximum number of termination cycles of the simulator
+        # The maximum number of termination cycles of the simulator.
         self.HALT = HALT
-        # This data structure is used to record the execution and termination
+        # This data structure is used to record the execution and termination.
         # of tasks
         self.log_list = {}
-        # This data structure is used to provide a task queue
+        # This data structure is used to provide a task queue.
         self.queue = []
         # This data structure is used to record the input signal string of
         # tasks in the task queue
         self.queue_temp = []
         # This data structure is used to record the initial state of tasks in
-        # the task queue
+        # the task queue.
         self.queue_init = []
         # This data structure is used to record the PID of the task that the
-        # task queue is waiting for
+        # task queue is waiting for.
         self.current = -1
 
     def call_after_delay(self, delay):
         """
-        This decorator is used to make a task execute after a period of delay
+        This decorator is used to make a task execute after a period of delay.
         :param delay: number of delay cycles
         :return: a decorator
         """
@@ -78,7 +75,8 @@ class machine:
 
     def call_by_queue(self, inp):
         """
-        This decorator is used to make a task enter the queue. When the simulator is running, the tasks in the task queue will be executed in sequence
+        This decorator is used to make a task enter the queue. When the simulator is running, the tasks in the task
+        queue will be executed in sequence.
         :param inp: Task input signal string
         :return: a decorator
         """
@@ -93,7 +91,7 @@ class machine:
 
     def seq_sup(self, inp):
         """
-        This decorator is used to perform a task and load a string of input signals
+        This decorator is used to perform a task and load a string of input signals.
         :param inp: Task input signal string
         :return: a decorator
         """
@@ -114,7 +112,7 @@ class machine:
 
     def IO_en(self, IO):
         """
-        This decorator is used to enable the IO of the simulator (standard input, blocking)
+        This decorator is used to enable the IO of the simulator (standard input, blocking).
         :param IO: Enable IO status , True or False
         :return: a decorator
         """
@@ -142,7 +140,7 @@ class machine:
 
     def execute(self):
         """
-        Run our simulator
+        Run our simulator.
         :return: nothing
         """
 
