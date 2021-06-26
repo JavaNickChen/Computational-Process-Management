@@ -1,7 +1,7 @@
 import collections
 import time
 from functools import wraps
-from typing import List, OrderedDict, Any, Tuple, Union, Dict
+from typing import List, OrderedDict, Any, Tuple, Union, Dict, Callable
 
 
 class Machine:
@@ -9,7 +9,7 @@ class Machine:
     This is a parallel multitasking processor simulator.
     """
 
-    def __init__(self, T, HALT) -> None:
+    def __init__(self, T: int, HALT: int) -> None:
         """
         Initialize a parallel simulator.
         :param T: The waiting time of each cycle of the simulator.
@@ -62,9 +62,9 @@ class Machine:
         :param delay: number of delay cycles
         :return: a decorator
         """
-        def decorator(fun):
+        def decorator(fun: Callable[[str, Union[int, str]], Any]) -> Any:
             @wraps(fun)
-            def wrapper(a, b):
+            def wrapper(a: str, b: Union[int, str]) -> None:
                 self.work_queue[self.count] = fun
                 self.delay_pool[self.count] = delay
                 self.delay_init[self.count] = b
@@ -79,9 +79,9 @@ class Machine:
         :param inp: Task input signal string
         :return: a decorator
         """
-        def decorator(fun):
+        def decorator(fun: Callable[[str, Union[int, str]], Any]) -> Any:
             @wraps(fun)
-            def wrapper(a, b):
+            def wrapper(a: str, b: Union[int, str]) -> None:
                 self.queue.append(fun)
                 self.queue_temp.append(inp)
                 self.queue_init.append(b)
@@ -94,9 +94,9 @@ class Machine:
         :param inp: Task input signal string
         :return: a decorator
         """
-        def decorator(fun):
+        def decorator(fun: Callable[[str, Union[int, str]], Any]) -> Any:
             @wraps(fun)
-            def wrapfun(a, b):
+            def wrapfun(a: str, b: Union[int, str]) -> None:
                 if self.timer not in self.log_list.keys():
                     self.log_list[self.timer] = []
                 self.work_pool[self.count_t] = fun
@@ -115,9 +115,9 @@ class Machine:
         :param IO: Enable I/O status , True or False
         :return: a decorator
         """
-        def decorator(fun):
+        def decorator(fun: Callable[[str, Union[int, str]], Any]) -> Any:
             @wraps(fun)
-            def wrapfun(a, b):
+            def wrapfun(a: str, b: Union[int, str]) -> None:
                 self.IO_enable = IO
                 fun(a, b)
             return wrapfun
